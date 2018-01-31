@@ -1,0 +1,16 @@
+PODS:
+  - FForms (0.1.0)
+
+DEPENDENCIES:
+  - FForms (from `../fforms-ios`)
+
+EXTERNAL SOURCES:
+  FForms:
+    :path: ../fforms-ios
+
+SPEC CHECKSUMS:
+  FForms: 89f2e07acb74f80894bf5c7b6ac40607a9619cd0
+
+PODFILE CHECKSUM: c97d473486d61d5b2303450dd9b7a9f0fbef9f51
+
+COCOAPODS: 1.4.0
