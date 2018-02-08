@@ -34,8 +34,6 @@ public func ==(lhs: ValidationError, rhs: ValidationError) -> Bool {
 }
 
 
-
-
 // MARK: - Email
 
 extension ValidationError {
