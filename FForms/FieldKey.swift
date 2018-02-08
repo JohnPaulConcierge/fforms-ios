@@ -27,9 +27,10 @@ public extension FieldKey {
         switch contentType {
         case .postalCode,
              .creditCardNumber,
-             .creditCardExpiry,
              .creditCardCVV:
             return .numberPad
+        case .creditCardExpiry:
+            return .numbersAndPunctuation
         case .emailAddress:
             return .emailAddress
         case .URL:
