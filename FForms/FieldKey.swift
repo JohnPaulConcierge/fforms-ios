@@ -8,11 +8,11 @@
 import Foundation
 import UIKit
 
-public protocol FieldKey {
+public protocol FieldKey: Hashable {
     
     var rawValue: Int { get }
     
-    var contentType: UITextContentType { get }
+    var contentType: FieldContentType { get }
     
     var validator: Validator? { get }
     
@@ -21,24 +21,26 @@ public protocol FieldKey {
 }
 
 
-extension FieldKey {
+public extension FieldKey {
     
-    var keyboardType: UIKeyboardType {
-        
-        if #available(iOS 10, *) {
-            switch contentType {
-            case .postalCode, .creditCardNumber:
-                return .numberPad
-            case .emailAddress:
-                return .emailAddress
-            case .URL:
-                return .URL
-            default:
-                break
-            }
+    public var keyboardType: UIKeyboardType {
+        switch contentType {
+        case .postalCode,
+             .creditCardNumber,
+             .creditCardExpiry,
+             .creditCardCVV:
+            return .numberPad
+        case .emailAddress:
+            return .emailAddress
+        case .URL:
+            return .URL
+        default:
+            return .default
         }
-        return .default
-        
+    }
+    
+    public var validator: Validator? {
+        return nil
     }
     
 }

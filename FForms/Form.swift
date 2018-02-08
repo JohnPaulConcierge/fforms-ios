@@ -38,59 +38,33 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             f.delegate = self
             f.returnKeyType = .next
             f.inputAccessoryView = toolbar
-            f.font = FormAppearance.field?.font
+            
+            FormAppearance.formatField?(f)
             
             f.addTarget(self, action: #selector(editingChanged(sender:)), for: .editingChanged)
             
             let key = keys[i]
+            
             if #available(iOS 10, *) {
-                f.textContentType = key.contentType
+                f.textContentType = key.contentType.textContentType
             }
             
             f.keyboardType = key.keyboardType
         }
+        fields.last?.returnKeyType = .done
         
+    }
+    
+    //MARK: - Utils
+    
+    open func field(key: F) -> UITextField {
+        return fields[key.rawValue]
     }
     
     //MARK: - Toolbar
     
-    open func buildToolbar() -> UIToolbar {
-        let toolbar = UIToolbar()
-        
-        func item(_ it: FormAppearance.Toolbar.ItemType?, _ defaultTitle: String, _ selector: Selector) -> UIBarButtonItem {
-            switch it {
-            case nil:
-                return UIBarButtonItem(title: defaultTitle, style: .plain, target: self, action: selector)
-            case .some(.text(let t)):
-                return UIBarButtonItem(title: t, style: .plain, target: self, action: selector)
-            case .some(.image(let n)):
-                return UIBarButtonItem(image: UIImage(named: n), style: .plain, target: self, action: selector)
-            case .some(.system(let s)):
-                return UIBarButtonItem(barButtonSystemItem: s, target: self, action: selector)
-            }
-        }
-        
-        let toolbarAppearance = FormAppearance.toolbar
-        
-        toolbar.items = [
-            UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil),
-            item(toolbarAppearance?.previousItem, "previous", #selector(toolbarPrevious(_:))),
-            item(toolbarAppearance?.nextItem, "next", #selector(toolbarNext(_:))),
-            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-            item(toolbarAppearance?.doneItem, "done", #selector(toolbarDone(_:))),
-            UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
-        ]
-        
-        toolbar.barTintColor = toolbarAppearance?.barTintColor
-        toolbar.tintColor = toolbarAppearance?.tintColor
-        toolbar.backgroundColor = toolbarAppearance?.backgroundColor
-        toolbar.isUserInteractionEnabled = true
-        toolbar.isTranslucent = toolbarAppearance?.isTranslucent ?? true
-        toolbar.items![0].width = toolbarAppearance?.padding ?? 10
-        toolbar.items!.last!.width = toolbarAppearance?.padding ?? 10
-        toolbar.sizeToFit()
-        
-        return toolbar
+    open func buildToolbar() -> UIToolbar? {
+        return FormAppearance.makeToolbar?(self, #selector(toolbarPrevious(_:)), #selector(toolbarNext(_:)), #selector(toolbarDone(_:)))
     }
     
     @objc func toolbarNext(_ sender: Any?){
@@ -201,6 +175,21 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     
     @objc func editingChanged(sender: UITextField) {
         delegate?.form(self, field: sender, editingDidChangeTo: sender.text)
+    }
+    
+    //MARK: - Values
+    
+    open var values: [F: String] {
+        
+        var v = [F: String]()
+        
+        for (i, f) in fields.enumerated() {
+            if f.isHidden {
+                continue
+            }
+            v[keys[i]] = f.text
+        }
+        return v
     }
     
 
