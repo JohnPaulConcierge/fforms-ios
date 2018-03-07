@@ -189,28 +189,48 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         // Offsetting range lenght by the number of ignored chars inside range
         fixedRange.length -= countIgnored(text[swiftRange])
         
-//        if let cursor = textField.selectedTextRange {
-//            // Now adjusting selected range
-//            var cursorFirst = textField.offset(from: textField.beginningOfDocument, to: cursor.start)
-//            var cursorLength = textField.offset(from: textField.beginningOfDocument, to: cursor.end) - cursorFirst
-//
-//            let startIndex = text.index(text.startIndex, offsetBy: cursorFirst)
-//            let endIndex = text.index(cursorFirst, offsetBy: cursorLength)
-//
-//            cursorFirst =
-//
-//        }
-//
-        
         let validText = filter(text)
+        
+        // This string will contain the replaced version but only with valid characters
         let validReplaced: String
+        
+        // Computing cursor position
+        // Placing cursor at end of replaced area in valid string
+        var cursorPosition: Int
         if let newSwiftRange = Range(fixedRange, in: validText) {
-            validReplaced = validText.replacingCharacters(in: newSwiftRange, with: filter(string))
+            let replacementString = filter(string)
+            cursorPosition = validText.distance(from: validText.startIndex, to: newSwiftRange.lowerBound) + replacementString.count
+            validReplaced = validText.replacingCharacters(in: newSwiftRange, with: replacementString)
         } else {
+            // Just putting this as safeguard, should not happen
+            assert(false)
+            cursorPosition = range.lowerBound + string.count
             validReplaced = filter(text.replacingCharacters(in: swiftRange, with: string))
         }
         
-        textField.text = validator.format(text: validReplaced) 
+        // Valid replaced now contains a string with only valid characters
+        let finalText = validator.format(text: validReplaced)
+        
+        // Moving cursor so that there are `cursorPosition` valid characters before it
+        var finalIndex = finalText.startIndex
+        while cursorPosition > 0 && finalIndex < finalText.endIndex {
+            
+            // Only supporting char with a single unicode scalar
+            if (set.contains(finalText[finalIndex].unicodeScalars.first!)) {
+                cursorPosition -= 1
+            }
+            
+            finalIndex = finalText.index(finalIndex, offsetBy: 1)
+        }
+        
+        let finalPosition = finalText.distance(from: finalText.startIndex, to: finalIndex)
+        
+        textField.text = finalText
+        
+        if let begin = textField.position(from: textField.beginningOfDocument, offset: finalPosition) {
+            textField.selectedTextRange = textField.textRange(from: begin,
+                                                              to: begin)
+        }
         
         return false
     }
