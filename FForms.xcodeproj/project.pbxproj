@@ -127,7 +127,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FF876BB8202230C60022C142 /* Build configuration list for PBXProject "FForm" */;
+			buildConfigurationList = FF876BB8202230C60022C142 /* Build configuration list for PBXProject "FForms" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -199,11 +199,15 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-FForm/Pods-FForm-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/FForm/FForm.framework",
+				"${BUILT_PRODUCTS_DIR}/FForms/FForms.framework",
+				"${BUILT_PRODUCTS_DIR}/JPKit/JPKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FForm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FForms.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JPKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -386,7 +390,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FF876BB8202230C60022C142 /* Build configuration list for PBXProject "FForm" */ = {
+		FF876BB8202230C60022C142 /* Build configuration list for PBXProject "FForms" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FF876BCD202230C60022C142 /* Debug */,

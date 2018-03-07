@@ -9,10 +9,20 @@ import Foundation
 
 public protocol Validator {
     
+    var validCharacterSet: CharacterSet? { get }
+    
     func format(text: String) -> String
     
     func validate(text: String) -> ValidationError?
     
+}
+
+extension Validator {
+    
+    public var validCharacterSet: CharacterSet? {
+        return nil
+    }
+
 }
 
 public struct ValidationError : RawRepresentable, Equatable, Hashable {
@@ -43,6 +53,8 @@ extension ValidationError {
 
 public struct EmailValidator: Validator {
     
+    public static let shared = EmailValidator()
+    
     public func format(text: String) -> String {
         return text
     }
@@ -63,10 +75,22 @@ extension ValidationError {
 
 public struct CardValidator: Validator {
     
+    public static var maxNumberOfCharacters = 16
+    
+    public static let shared = CardValidator()
+    
+    public var validCharacterSet: CharacterSet? {
+        return CharacterSet(charactersIn:"0123456789")
+    }
+    
     public func format(text: String) -> String {
-        let allowed = CharacterSet.decimalDigits
-        var t = text.unicodeScalars.filter(allowed.contains)
-        return String(String.UnicodeScalarView(t))
+        var str = text.prefix(CardValidator.maxNumberOfCharacters)
+        var i = 4
+        while i < str.count {
+            str.insert(" ", at: str.index(str.startIndex, offsetBy: i))
+            i += 5
+        }
+        return String(str)
     }
     
     public func validate(text: String) -> ValidationError? {

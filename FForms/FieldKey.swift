@@ -41,7 +41,14 @@ public extension FieldKey {
     }
     
     public var validator: Validator? {
-        return nil
+        switch contentType {
+        case .emailAddress:
+            return EmailValidator.shared
+        case .creditCardNumber:
+            return CardValidator.shared
+        default:
+            return nil
+        }
     }
     
 }

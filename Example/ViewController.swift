@@ -7,12 +7,57 @@
 //
 
 import UIKit
+import FForms
+import JPKit
 
 class ViewController: UIViewController {
+    
+    public enum Field: Int, FieldKey {
+        
+        case number
+        case expiry
+        case cvv
+        case name
+        case address
+        case city
+        case zip
+        case country
+        case phoneNumber
+        
+        public static var all: [Field] = [.number, .expiry, .cvv, .name, .address, .city, .zip, .country, .phoneNumber]
+        
+        public var contentType: FieldContentType {
+            switch self {
+            case .number:
+                return .creditCardNumber
+            case .expiry:
+                return .creditCardExpiry
+            case .cvv:
+                return .creditCardCVV
+            case .name:
+                return .name
+            case .address:
+                return .streetAddressLine1
+            case .city:
+                return .addressCity
+            case .zip:
+                return .postalCode
+            case .country:
+                return .countryName
+            case .phoneNumber:
+                return .telephoneNumber
+            }
+        }
+    }
+    
+    @IBOutlet var fields: [FloatingLabelTextField] = []
+    
+    var form: Form<Field>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        form = try! Form(keys: Field.all, fields: fields)
     }
 
     override func didReceiveMemoryWarning() {

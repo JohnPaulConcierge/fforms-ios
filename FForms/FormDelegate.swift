@@ -9,8 +9,8 @@ import Foundation
 
 public protocol FormDelegate: class {
     
-    func form<F: FieldKey>(_ form: Form<F>, field: UITextField, didEndEditingWith error: String?)
+    func form<F>(_ form: Form<F>, field: UITextField, didEndEditingWith error: ValidationError?)
     
-    func form<F: FieldKey>(_ form: Form<F>, field: UITextField, editingDidChangeTo text: String?)
+    func form<F>(_ form: Form<F>, field: UITextField, editingDidChangeTo text: String?)
     
 }

@@ -1,16 +1,27 @@
 PODS:
-  - FForms (0.1.0)
+  - FForms (0.1.0):
+    - PhoneNumberKit
+  - JPKit/FloatingLabel (0.4.2)
+  - PhoneNumberKit (2.1.0):
+    - PhoneNumberKit/PhoneNumberKitCore (= 2.1.0)
+    - PhoneNumberKit/UIKit (= 2.1.0)
+  - PhoneNumberKit/PhoneNumberKitCore (2.1.0)
+  - PhoneNumberKit/UIKit (2.1.0):
+    - PhoneNumberKit/PhoneNumberKitCore
 
 DEPENDENCIES:
   - FForms (from `../fforms-ios`)
+  - JPKit/FloatingLabel
 
 EXTERNAL SOURCES:
   FForms:
     :path: ../fforms-ios
 
 SPEC CHECKSUMS:
-  FForms: 89f2e07acb74f80894bf5c7b6ac40607a9619cd0
+  FForms: d8cba08a06709c80555bca443fbdc1e49432f229
+  JPKit: f00733eb9c93b4dfca28cf4e4ac09eaaf1397f50
+  PhoneNumberKit: 62003f40ff75315fd3738286558bc365365ac222
 
-PODFILE CHECKSUM: c97d473486d61d5b2303450dd9b7a9f0fbef9f51
+PODFILE CHECKSUM: 91e053d7e65bcd8bab64c9fa960be6e039e60356
 
 COCOAPODS: 1.4.0
