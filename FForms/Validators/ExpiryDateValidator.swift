@@ -9,8 +9,8 @@ import Foundation
 
 extension ValidationError {
     
-    static let invalidExpiryDate = ValidationError(rawValue: "invalid_expiry_date")!
-    static let pastExpiryDate = ValidationError(rawValue: "past_expiry_date")!
+    public static let invalidExpiryDate = ValidationError(rawValue: "invalid_expiry_date")!
+    public static let pastExpiryDate = ValidationError(rawValue: "past_expiry_date")!
 }
 
 public struct ExpiryDateValidator: Validator {

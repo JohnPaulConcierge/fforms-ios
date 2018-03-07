@@ -9,7 +9,7 @@ import Foundation
 
 extension ValidationError {
     
-    static let invalidCard = ValidationError("invalid_card")
+    public static let invalidCard = ValidationError("invalid_card")
 }
 
 public struct CardValidator: Validator {

@@ -9,7 +9,7 @@ import Foundation
 
 extension ValidationError {
     
-    static let invalidEmail = ValidationError("invalid_email")
+    public static let invalidEmail = ValidationError("invalid_email")
 }
 
 public struct EmailValidator: Validator {
