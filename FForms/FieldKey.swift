@@ -27,10 +27,9 @@ public extension FieldKey {
         switch contentType {
         case .postalCode,
              .creditCardNumber,
-             .creditCardCVV:
+             .creditCardCVV,
+             .creditCardExpiry:
             return .numberPad
-        case .creditCardExpiry:
-            return .numbersAndPunctuation
         case .emailAddress:
             return .emailAddress
         case .URL:
@@ -46,6 +45,8 @@ public extension FieldKey {
             return EmailValidator.shared
         case .creditCardNumber:
             return CardValidator.shared
+        case .creditCardExpiry:
+            return ExpiryDateValidator.shared
         default:
             return nil
         }

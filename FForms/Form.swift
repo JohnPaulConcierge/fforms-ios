@@ -174,10 +174,6 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             textField.text = validator.format(text: text.replacingCharacters(in: swiftRange, with: string))
             return false
         }
-        
-        func filter(_ string: String) -> String {
-            return String(string.unicodeScalars.filter({ set.contains($0) }))
-        }
 
         func countIgnored(_ string: Substring) -> Int {
             return string.unicodeScalars.reduce(0)  {
@@ -189,7 +185,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         // Offsetting range lenght by the number of ignored chars inside range
         fixedRange.length -= countIgnored(text[swiftRange])
         
-        let validText = filter(text)
+        let validText = Utils.filter(text, set)
         
         // This string will contain the replaced version but only with valid characters
         let validReplaced: String
@@ -198,14 +194,14 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         // Placing cursor at end of replaced area in valid string
         var cursorPosition: Int
         if let newSwiftRange = Range(fixedRange, in: validText) {
-            let replacementString = filter(string)
+            let replacementString = Utils.filter(string, set)
             cursorPosition = validText.distance(from: validText.startIndex, to: newSwiftRange.lowerBound) + replacementString.count
             validReplaced = validText.replacingCharacters(in: newSwiftRange, with: replacementString)
         } else {
             // Just putting this as safeguard, should not happen
             assert(false)
             cursorPosition = range.lowerBound + string.count
-            validReplaced = filter(text.replacingCharacters(in: swiftRange, with: string))
+            validReplaced = Utils.filter(text.replacingCharacters(in: swiftRange, with: string), set)
         }
         
         // Valid replaced now contains a string with only valid characters
@@ -230,6 +226,16 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         if let begin = textField.position(from: textField.beginningOfDocument, offset: finalPosition) {
             textField.selectedTextRange = textField.textRange(from: begin,
                                                               to: begin)
+        }
+        
+        if let count = validator.validCount,
+            count == validReplaced.count {
+            
+            if let error = validator.validate(text: finalText) {
+                delegate?.form(self, field: textField, didEndEditingWith: error)
+            } else {
+                nextField?.becomeFirstResponder()
+            }
         }
         
         return false

@@ -58,6 +58,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         form = try! Form(keys: Field.all, fields: fields)
+        form.delegate = self
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,6 +66,20 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
+}
 
+extension ViewController: FormDelegate {
+    
+    func form<F>(_ form: Form<F>, field: UITextField, didEndEditingWith error: ValidationError?) {
+        if let e = error {
+            (field as? FloatingLabelTextField)?.error = NSLocalizedString(e.rawValue, comment: "")
+        } else {
+            (field as? FloatingLabelTextField)?.error = nil
+        }
+    }
+    
+    func form<F>(_ form: Form<F>, field: UITextField, editingDidChangeTo text: String?) {
+        
+    }
 }
 

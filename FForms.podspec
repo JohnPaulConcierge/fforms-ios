@@ -8,7 +8,7 @@ Pod::Spec.new do |s|
   s.author             = { "JP Mobile" => "mobile@johnpaul.com" }
   s.source       = { :git => "https://github.com/JohnPaulConcierge/fforms-ios.git", :tag => "#{s.version}" }
   
-  s.source_files  = "FForms/*.swift"
+  s.source_files  = "FForms/**/*.swift"
 
   s.ios.deployment_target = '9.0'
   

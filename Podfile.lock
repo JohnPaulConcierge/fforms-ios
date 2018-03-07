@@ -18,7 +18,7 @@ EXTERNAL SOURCES:
     :path: ../fforms-ios
 
 SPEC CHECKSUMS:
-  FForms: d8cba08a06709c80555bca443fbdc1e49432f229
+  FForms: c3ecd0ffa32ed59e33d73a797862d8eddf2b705c
   JPKit: f00733eb9c93b4dfca28cf4e4ac09eaaf1397f50
   PhoneNumberKit: 62003f40ff75315fd3738286558bc365365ac222
 
