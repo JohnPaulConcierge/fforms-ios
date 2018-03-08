@@ -48,6 +48,19 @@ class ViewController: UIViewController {
                 return .telephoneNumber
             }
         }
+        
+        public var validator: Validator? {
+            switch contentType {
+            case .emailAddress:
+                return EmailValidator.shared
+            case .creditCardNumber:
+                return VisaCardValidator.sharedVisa
+            case .creditCardExpiry:
+                return ExpiryDateValidator.shared
+            default:
+                return nil
+            }
+        }
     }
     
     @IBOutlet var fields: [FloatingLabelTextField] = []
@@ -58,6 +71,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         form = try! Form(keys: Field.all, fields: fields)
+        form.field(key: .number).text = "4"
         form.delegate = self
     }
 

@@ -14,6 +14,7 @@
 		FF876BDE202231390022C142 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF876BD7202231390022C142 /* Main.storyboard */; };
 		FF876BDF202231390022C142 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF876BD9202231390022C142 /* AppDelegate.swift */; };
 		FFF6A777205092EE00E93729 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FFF6A776205092EE00E93729 /* Localizable.strings */; };
+		FFF6A77F2050B03400E93729 /* VisaCardValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF6A77E2050B03400E93729 /* VisaCardValidator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		FF876BD9202231390022C142 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF876BDA202231390022C142 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FFF6A776205092EE00E93729 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		FFF6A77E2050B03400E93729 /* VisaCardValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCardValidator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				FF876BD5202231390022C142 /* LaunchScreen.storyboard */,
 				FF876BD7202231390022C142 /* Main.storyboard */,
 				FF876BD9202231390022C142 /* AppDelegate.swift */,
+				FFF6A77E2050B03400E93729 /* VisaCardValidator.swift */,
 				FFF6A776205092EE00E93729 /* Localizable.strings */,
 				FF876BDA202231390022C142 /* Info.plist */,
 			);
@@ -227,6 +230,7 @@
 			files = (
 				FF876BDF202231390022C142 /* AppDelegate.swift in Sources */,
 				FF876BDB202231390022C142 /* ViewController.swift in Sources */,
+				FFF6A77F2050B03400E93729 /* VisaCardValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

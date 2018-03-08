@@ -12,15 +12,15 @@ extension ValidationError {
     public static let invalidEmail = ValidationError("invalid_email")
 }
 
-public struct EmailValidator: Validator {
+open class EmailValidator: Validator {
     
     public static let shared = EmailValidator()
     
-    public func format(text: String) -> String {
-        return text
+    open func format(text: String) -> (text: String, offset: Int) {
+        return (text, 0)
     }
     
-    public func validate(text: String) -> ValidationError? {
+    open func validate(text: String) -> ValidationError? {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}"
         return NSPredicate(format:"SELF MATCHES %@", emailRegEx).evaluate(with: text) ? nil : ValidationError.invalidEmail
     }

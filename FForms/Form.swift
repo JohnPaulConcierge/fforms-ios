@@ -66,7 +66,8 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         guard let index = fields.index(of: field) else {
             return nil
         }
-        return keys[index].validator
+        let key = keys[index]
+        return delegate?.form(self, validatorFor: key) ?? key.validator
     }
     
     //MARK: - Toolbar
@@ -171,7 +172,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         var fixedRange = range
         
         guard let set = validator.validCharacterSet else {
-            textField.text = validator.format(text: text.replacingCharacters(in: swiftRange, with: string))
+            textField.text = validator.format(text: text.replacingCharacters(in: swiftRange, with: string)).text
             return false
         }
 
@@ -205,7 +206,8 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         }
         
         // Valid replaced now contains a string with only valid characters
-        let finalText = validator.format(text: validReplaced)
+        let v = validator.format(text: validReplaced)
+        let finalText = v.text
         
         // Moving cursor so that there are `cursorPosition` valid characters before it
         var finalIndex = finalText.startIndex
@@ -218,8 +220,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             
             finalIndex = finalText.index(finalIndex, offsetBy: 1)
         }
-        
-        let finalPosition = finalText.distance(from: finalText.startIndex, to: finalIndex)
+        let finalPosition = finalText.distance(from: finalText.startIndex, to: finalIndex) + v.offset
         
         textField.text = finalText
         
@@ -266,7 +267,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         guard key.validator?.validate(text: value) == nil else {
             throw FormError.valueDidNotValidate
         }
-        field(key: key).text = key.validator?.format(text: value) ?? value
+        field(key: key).text = key.validator?.format(text: value).text ?? value
     }
 
 }

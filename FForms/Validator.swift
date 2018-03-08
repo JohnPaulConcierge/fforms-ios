@@ -13,7 +13,7 @@ public protocol Validator {
     
     var validCount: Int? { get }
     
-    func format(text: String) -> String
+    func format(text: String) -> (text: String, offset: Int)
     
     func validate(text: String) -> ValidationError?
     

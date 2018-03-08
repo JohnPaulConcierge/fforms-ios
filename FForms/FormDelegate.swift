@@ -13,4 +13,14 @@ public protocol FormDelegate: class {
     
     func form<F>(_ form: Form<F>, field: UITextField, editingDidChangeTo text: String?)
     
+    func form<F>(_ form: Form<F>, validatorFor key: F) -> Validator?
+    
+}
+
+extension FormDelegate {
+    
+    public func form<F>(_ form: Form<F>, validatorFor key: F) -> Validator? {
+        return nil
+    }
+    
 }

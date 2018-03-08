@@ -13,26 +13,26 @@ extension ValidationError {
     public static let pastExpiryDate = ValidationError(rawValue: "past_expiry_date")!
 }
 
-public struct ExpiryDateValidator: Validator {
+open class ExpiryDateValidator: Validator {
     
     public static var maxNumberOfCharacters = 4
     
     public static let shared = ExpiryDateValidator()
     
-    public var validCharacterSet: CharacterSet? {
+    open var validCharacterSet: CharacterSet? {
         return CharacterSet(charactersIn:"0123456789")
     }
     
-    public func format(text: String) -> String {
+    open func format(text: String) -> (text: String, offset: Int) {
         let i = 2
         var str = text
         if i < str.count {
             str.insert("/", at: str.index(str.startIndex, offsetBy: i))
         }
-        return str
+        return (str, 0)
     }
     
-    public func validate(text: String) -> ValidationError? {
+    open func validate(text: String) -> ValidationError? {
         let values = text.split(separator: "/")
         guard values.count == 2,
             let month = Int(values[0]),
@@ -55,7 +55,7 @@ public struct ExpiryDateValidator: Validator {
         return newDate.timeIntervalSinceNow < 0 ? ValidationError.pastExpiryDate : nil
     }
     
-    public var validCount: Int? {
+    open var validCount: Int? {
         return 4
     }
     
