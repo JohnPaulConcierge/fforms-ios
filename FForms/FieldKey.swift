@@ -18,10 +18,16 @@ public protocol FieldKey: Hashable {
     
     var keyboardType: UIKeyboardType { get }
     
+    var isRequired: Bool { get }
+    
 }
 
 
 public extension FieldKey {
+    
+    public var isRequired: Bool {
+        return true
+    }
     
     public var keyboardType: UIKeyboardType {
         switch contentType {

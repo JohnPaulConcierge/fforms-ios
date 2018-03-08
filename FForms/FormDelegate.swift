@@ -15,12 +15,18 @@ public protocol FormDelegate: class {
     
     func form<F>(_ form: Form<F>, validatorFor key: F) -> Validator?
     
+    func form<F>(_ form: Form<F>, requires key: F) -> Bool
+    
 }
 
 extension FormDelegate {
     
     public func form<F>(_ form: Form<F>, validatorFor key: F) -> Validator? {
-        return nil
+        return key.validator
+    }
+    
+    public func form<F>(_ form: Form<F>, requires key: F) -> Bool {
+        return key.isRequired
     }
     
 }

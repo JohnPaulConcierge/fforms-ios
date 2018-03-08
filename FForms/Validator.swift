@@ -47,8 +47,6 @@ public struct ValidationError : RawRepresentable, Equatable, Hashable {
         return rawValue.hashValue
     }
     
-}
-
-public func ==(lhs: ValidationError, rhs: ValidationError) -> Bool {
-    return lhs.rawValue == rhs.rawValue
+    public static let empty = ValidationError("empty")
+    
 }

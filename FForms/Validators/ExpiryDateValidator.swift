@@ -45,6 +45,10 @@ open class ExpiryDateValidator: Validator {
         comps.month = month
         comps.year = 2000 + year
         
+        guard month > 0 && month <= 12 else {
+            return ValidationError.invalidExpiryDate
+        }
+        
         let calendar = Calendar(identifier: .gregorian)
         
         guard let date = calendar.date(from: comps),

@@ -62,12 +62,17 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         return fields[key.rawValue]
     }
     
+    open func validator(key: F) -> Validator? {
+        return delegate?.form(self, validatorFor: key)
+    }
+    
     open func validator(field: UITextField) -> Validator? {
         guard let index = fields.index(of: field) else {
             return nil
         }
         let key = keys[index]
-        return delegate?.form(self, validatorFor: key) ?? key.validator
+        print(key)
+        return validator(key: key)
     }
     
     //MARK: - Toolbar
@@ -189,7 +194,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         let validText = Utils.filter(text, set)
         
         // This string will contain the replaced version but only with valid characters
-        let validReplaced: String
+        var validReplaced: String
         
         // Computing cursor position
         // Placing cursor at end of replaced area in valid string
@@ -203,6 +208,10 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             assert(false)
             cursorPosition = range.lowerBound + string.count
             validReplaced = Utils.filter(text.replacingCharacters(in: swiftRange, with: string), set)
+        }
+        
+        if let count = validator.validCount {
+            validReplaced = String(validReplaced.prefix(count))
         }
         
         // Valid replaced now contains a string with only valid characters
@@ -249,7 +258,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     
     //MARK: - Values
     
-    open var values: [F: String] {
+    open var result: Form.Result {
         
         var v = [F: String]()
         
@@ -257,17 +266,33 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             if f.isHidden {
                 continue
             }
+            
+            let key = keys[i]
+            guard let text = f.text,
+                !text.isEmpty else {
+                    return .missing(key, .empty)
+            }
+            
+            if let v = validator(key: key),
+                let error = v.validate(text: text) {
+                return .missing(key, error)
+            }
+            
             v[keys[i]] = f.text
         }
-        return v
+        
+        return .complete(v)
     }
-    
     
     open func setValue(_ value: String, for key: F) throws {
         guard key.validator?.validate(text: value) == nil else {
             throw FormError.valueDidNotValidate
         }
         field(key: key).text = key.validator?.format(text: value).text ?? value
+    }
+    
+    open func value(for key: F) -> String? {
+        return field(key: key).text
     }
 
 }
