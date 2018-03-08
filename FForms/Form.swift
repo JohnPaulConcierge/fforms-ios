@@ -71,7 +71,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             return nil
         }
         let key = keys[index]
-        print(key)
+
         return validator(key: key)
     }
     
