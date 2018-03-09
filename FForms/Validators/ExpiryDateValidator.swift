@@ -33,17 +33,17 @@ open class ExpiryDateValidator: Validator {
     }
     
     open func validate(text: String) -> ValidationError? {
-        let values = text.split(separator: "/")
-        guard values.count == 2,
-            let month = Int(values[0]),
-            let year = Int(values[1]) else {
+        let index = text.index(text.startIndex, offsetBy: 2)
+        guard text.count >= 4,
+            let month = Int(text[..<index]),
+            let year = Int(text[index...]) else {
                 return ValidationError.invalidExpiryDate
         }
         
         var comps = DateComponents()
         comps.day = 1
         comps.month = month
-        comps.year = 2000 + year
+        comps.year = year > 100 ? year : 2000 + year
         
         guard month > 0 && month <= 12 else {
             return ValidationError.invalidExpiryDate

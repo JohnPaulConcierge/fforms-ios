@@ -37,12 +37,7 @@ open class CardValidator: Validator {
     }
     
     open func validate(text: String) -> ValidationError? {
-        let count: Int
-        if let c = validCharacterSet {
-            count = Utils.filter(text, c).count
-        } else {
-            count = text.count
-        }
+        let count = filter(text: text).count
         return count == validCount ? nil : ValidationError.invalidCard
     }
     

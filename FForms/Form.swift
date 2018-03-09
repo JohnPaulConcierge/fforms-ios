@@ -191,7 +191,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         // Offsetting range lenght by the number of ignored chars inside range
         fixedRange.length -= countIgnored(text[swiftRange])
         
-        let validText = Utils.filter(text, set)
+        let validText = validator.filter(text: text)
         
         // This string will contain the replaced version but only with valid characters
         var validReplaced: String
@@ -200,14 +200,14 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         // Placing cursor at end of replaced area in valid string
         var cursorPosition: Int
         if let newSwiftRange = Range(fixedRange, in: validText) {
-            let replacementString = Utils.filter(string, set)
+            let replacementString = validator.filter(text: string)
             cursorPosition = validText.distance(from: validText.startIndex, to: newSwiftRange.lowerBound) + replacementString.count
             validReplaced = validText.replacingCharacters(in: newSwiftRange, with: replacementString)
         } else {
             // Just putting this as safeguard, should not happen
             assert(false)
             cursorPosition = range.lowerBound + string.count
-            validReplaced = Utils.filter(text.replacingCharacters(in: swiftRange, with: string), set)
+            validReplaced = validator.filter(text: text.replacingCharacters(in: swiftRange, with: string))
         }
         
         if let count = validator.validCount {
@@ -285,10 +285,18 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     }
     
     open func setValue(_ value: String, for key: F) throws {
-        guard key.validator?.validate(text: value) == nil else {
+        
+        guard let v = self.validator(key: key) else {
+            field(key: key).text = value
+            return
+        }
+        
+        let valid = v.filter(text: value)
+        
+        guard v.validate(text: valid) == nil else {
             throw FormError.valueDidNotValidate
         }
-        field(key: key).text = key.validator?.format(text: value).text ?? value
+        field(key: key).text = v.format(text: valid).text ?? value
     }
     
     open func value(for key: F) -> String? {

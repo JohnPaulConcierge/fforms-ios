@@ -28,6 +28,13 @@ extension Validator {
     public var validCount: Int? {
         return nil
     }
+    
+    public func filter(text: String) -> String {
+        guard let set = validCharacterSet else {
+            return text
+        }
+        return String(text.unicodeScalars.filter({ set.contains($0) }))
+    }
 
 }
 
