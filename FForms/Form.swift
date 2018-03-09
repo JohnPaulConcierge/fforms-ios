@@ -161,8 +161,9 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     }
     
     open func textFieldDidEndEditing(_ textField: UITextField) {
+        let v = validator(field: textField)
         delegate?.form(self, field: textField,
-                       didEndEditingWith: validator(field: textField)?.validate(text: textField.text ?? ""))
+                       didEndEditingWith: v?.validate(text: v?.filter(text: textField.text ?? "") ?? ""))
     }
     
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
@@ -274,7 +275,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             }
             
             if let v = validator(key: key),
-                let error = v.validate(text: text) {
+                let error = v.validate(text: v.filter(text: text)) {
                 return .missing(key, error)
             }
             
