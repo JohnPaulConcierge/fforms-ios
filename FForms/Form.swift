@@ -9,7 +9,7 @@ import UIKit
 
 public enum FormError: Error {
     case fieldAndViewCountDoNotMatch
-    case valueDidNotValidate
+    case valueDidNotValidate(ValidationError)
 }
 
 open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
@@ -302,8 +302,8 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         
         let valid = v.filter(text: value)
         
-        guard v.validate(text: valid) == nil else {
-            throw FormError.valueDidNotValidate
+        if let v = v.validate(text: valid) {
+            throw FormError.valueDidNotValidate(v)
         }
         field(key: key).text = v.format(text: valid).text ?? value
     }
