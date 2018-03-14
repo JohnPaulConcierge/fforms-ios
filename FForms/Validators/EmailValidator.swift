@@ -25,4 +25,8 @@ open class EmailValidator: Validator {
         return NSPredicate(format:"SELF MATCHES %@", emailRegEx).evaluate(with: text) ? nil : ValidationError.invalidEmail
     }
     
+    open var validCharacterSet: CharacterSet? {
+        return CharacterSet(charactersIn: " ").inverted
+    }
+    
 }

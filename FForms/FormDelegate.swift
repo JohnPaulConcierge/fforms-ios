@@ -20,7 +20,7 @@ public protocol FormDelegate: class {
 }
 
 extension FormDelegate {
-    
+
     public func form<F>(_ form: Form<F>, validatorFor key: F) -> Validator? {
         return key.validator
     }
