@@ -18,19 +18,24 @@ public protocol FieldKey: Hashable {
     
     var keyboardType: UIKeyboardType { get }
     
+    var isRequired: Bool { get }
+    
 }
 
 
 public extension FieldKey {
     
+    public var isRequired: Bool {
+        return true
+    }
+    
     public var keyboardType: UIKeyboardType {
         switch contentType {
         case .postalCode,
              .creditCardNumber,
-             .creditCardCVV:
+             .creditCardCVV,
+             .creditCardExpiry:
             return .numberPad
-        case .creditCardExpiry:
-            return .numbersAndPunctuation
         case .emailAddress:
             return .emailAddress
         case .URL:
@@ -41,7 +46,16 @@ public extension FieldKey {
     }
     
     public var validator: Validator? {
-        return nil
+        switch contentType {
+        case .emailAddress:
+            return EmailValidator.shared
+        case .creditCardNumber:
+            return CardValidator.shared
+        case .creditCardExpiry:
+            return ExpiryDateValidator.shared
+        default:
+            return nil
+        }
     }
     
 }

@@ -9,6 +9,7 @@ import UIKit
 
 public enum FormError: Error {
     case fieldAndViewCountDoNotMatch
+    case valueDidNotValidate
 }
 
 open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
@@ -59,6 +60,19 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     
     open func field(key: F) -> UITextField {
         return fields[key.rawValue]
+    }
+    
+    open func validator(key: F) -> Validator? {
+        return delegate?.form(self, validatorFor: key)
+    }
+    
+    open func validator(field: UITextField) -> Validator? {
+        guard let index = fields.index(of: field) else {
+            return nil
+        }
+        let key = keys[index]
+
+        return validator(key: key)
     }
     
     //MARK: - Toolbar
@@ -116,8 +130,6 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         fields[i].resignFirstResponder()
     }
     
-    
-    
     //MARK: - UITextFieldDelegate
     
     open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -149,37 +161,105 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     }
     
     open func textFieldDidEndEditing(_ textField: UITextField) {
-        
-        guard let index = fields.index(of: textField) else {
-            return
+        let v = validator(field: textField)
+        delegate?.form(self, field: textField,
+                       didEndEditingWith: v?.validate(text: v?.filter(text: textField.text ?? "") ?? ""))
+    }
+    
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let validator = validator(field: textField),
+            var text = textField.text,
+            var swiftRange = Range(range, in: text) else {
+            return true
         }
-        let key = keys[index]
-        guard let validator = key.validator else {
-            return
+    
+        // Fixed range is the range in the string without the invalid chars
+        // It allows to ignore unwanted chars when deleting for example
+        var fixedRange = range
+        
+        guard let set = validator.validCharacterSet else {
+            textField.text = validator.format(text: text.replacingCharacters(in: swiftRange, with: string)).text
+            return false
+        }
+
+        func countIgnored(_ string: Substring) -> Int {
+            return string.unicodeScalars.reduce(0)  {
+                return set.contains($1) ? $0 : $0 + 1
+            }
+        }
+        // Offsetting range location by the number of ignored chars before range
+        fixedRange.location -= countIgnored(text[text.startIndex..<swiftRange.lowerBound])
+        // Offsetting range lenght by the number of ignored chars inside range
+        fixedRange.length -= countIgnored(text[swiftRange])
+        
+        let validText = validator.filter(text: text)
+        
+        // This string will contain the replaced version but only with valid characters
+        var validReplaced: String
+        
+        // Computing cursor position
+        // Placing cursor at end of replaced area in valid string
+        var cursorPosition: Int
+        if let newSwiftRange = Range(fixedRange, in: validText) {
+            let replacementString = validator.filter(text: string)
+            cursorPosition = validText.distance(from: validText.startIndex, to: newSwiftRange.lowerBound) + replacementString.count
+            validReplaced = validText.replacingCharacters(in: newSwiftRange, with: replacementString)
+        } else {
+            // Just putting this as safeguard, should not happen
+            assert(false)
+            cursorPosition = range.lowerBound + string.count
+            validReplaced = validator.filter(text: text.replacingCharacters(in: swiftRange, with: string))
         }
         
-//        let floating = textField as! FloatingLabelTextField
-//        guard let field = Field(rawValue: textField.tag),
-//            let text = textField.text else {
-//                return
-//        }
-//        switch field {
-//        case .card:
-//            floating.error = text.count == 16 ? nil : __("invalid_card")
-//        case .email:
-//            floating.error = text.isValidEmail ? nil : __("invalid_email")
-//        default:
-//            break
-//        }
+        if let count = validator.validCount {
+            validReplaced = String(validReplaced.prefix(count))
+        }
+        
+        // Valid replaced now contains a string with only valid characters
+        let v = validator.format(text: validReplaced)
+        let finalText = v.text
+        
+        // Moving cursor so that there are `cursorPosition` valid characters before it
+        var finalIndex = finalText.startIndex
+        while cursorPosition > 0 && finalIndex < finalText.endIndex {
+            
+            // Only supporting char with a single unicode scalar
+            if (set.contains(finalText[finalIndex].unicodeScalars.first!)) {
+                cursorPosition -= 1
+            }
+            
+            finalIndex = finalText.index(finalIndex, offsetBy: 1)
+        }
+        let finalPosition = finalText.distance(from: finalText.startIndex, to: finalIndex) + v.offset
+        
+        textField.text = finalText
+        
+        if let begin = textField.position(from: textField.beginningOfDocument, offset: finalPosition) {
+            textField.selectedTextRange = textField.textRange(from: begin,
+                                                              to: begin)
+        }
+        
+        if let count = validator.validCount,
+            count == validReplaced.count {
+            
+            if let error = validator.validate(text: finalText) {
+                delegate?.form(self, field: textField, didEndEditingWith: error)
+            } else {
+                nextField?.becomeFirstResponder()
+            }
+        }
+        
+        return false
     }
     
     @objc func editingChanged(sender: UITextField) {
+        
         delegate?.form(self, field: sender, editingDidChangeTo: sender.text)
     }
     
     //MARK: - Values
     
-    open var values: [F: String] {
+    open var result: Form.Result {
         
         var v = [F: String]()
         
@@ -187,10 +267,41 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             if f.isHidden {
                 continue
             }
+            
+            let key = keys[i]
+            guard let text = f.text,
+                !text.isEmpty else {
+                    return .missing(key, .empty)
+            }
+            
+            if let v = validator(key: key),
+                let error = v.validate(text: v.filter(text: text)) {
+                return .missing(key, error)
+            }
+            
             v[keys[i]] = f.text
         }
-        return v
+        
+        return .complete(v)
     }
     
+    open func setValue(_ value: String, for key: F) throws {
+        
+        guard let v = self.validator(key: key) else {
+            field(key: key).text = value
+            return
+        }
+        
+        let valid = v.filter(text: value)
+        
+        guard v.validate(text: valid) == nil else {
+            throw FormError.valueDidNotValidate
+        }
+        field(key: key).text = v.format(text: valid).text ?? value
+    }
+    
+    open func value(for key: F) -> String? {
+        return field(key: key).text
+    }
 
 }

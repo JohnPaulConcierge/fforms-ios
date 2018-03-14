@@ -28,7 +28,7 @@ open class ScrollableForm<F: FieldKey>: Form<F>, UIScrollViewDelegate {
         
         let textField = fields[activeIndex!]
         
-        var offset = scrollView.contentOffset
+        let offset = scrollView.contentOffset
         var frame = scrollView.convert(textField.frame, from: textField.superview!)
         frame.origin.y -= offset.y
     }

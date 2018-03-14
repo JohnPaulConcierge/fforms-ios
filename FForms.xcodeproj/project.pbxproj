@@ -13,6 +13,8 @@
 		FF876BDD202231390022C142 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF876BD5202231390022C142 /* LaunchScreen.storyboard */; };
 		FF876BDE202231390022C142 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FF876BD7202231390022C142 /* Main.storyboard */; };
 		FF876BDF202231390022C142 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FF876BD9202231390022C142 /* AppDelegate.swift */; };
+		FFF6A777205092EE00E93729 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = FFF6A776205092EE00E93729 /* Localizable.strings */; };
+		FFF6A77F2050B03400E93729 /* VisaCardValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FFF6A77E2050B03400E93729 /* VisaCardValidator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +28,8 @@
 		FF876BD8202231390022C142 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FF876BD9202231390022C142 /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FF876BDA202231390022C142 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FFF6A776205092EE00E93729 /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
+		FFF6A77E2050B03400E93729 /* VisaCardValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisaCardValidator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,6 +87,8 @@
 				FF876BD5202231390022C142 /* LaunchScreen.storyboard */,
 				FF876BD7202231390022C142 /* Main.storyboard */,
 				FF876BD9202231390022C142 /* AppDelegate.swift */,
+				FFF6A77E2050B03400E93729 /* VisaCardValidator.swift */,
+				FFF6A776205092EE00E93729 /* Localizable.strings */,
 				FF876BDA202231390022C142 /* Info.plist */,
 			);
 			path = Example;
@@ -127,7 +133,7 @@
 					};
 				};
 			};
-			buildConfigurationList = FF876BB8202230C60022C142 /* Build configuration list for PBXProject "FForm" */;
+			buildConfigurationList = FF876BB8202230C60022C142 /* Build configuration list for PBXProject "FForms" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -151,6 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FF876BDE202231390022C142 /* Main.storyboard in Resources */,
+				FFF6A777205092EE00E93729 /* Localizable.strings in Resources */,
 				FF876BDC202231390022C142 /* Assets.xcassets in Resources */,
 				FF876BDD202231390022C142 /* LaunchScreen.storyboard in Resources */,
 			);
@@ -199,11 +206,15 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-FForm/Pods-FForm-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/FForm/FForm.framework",
+				"${BUILT_PRODUCTS_DIR}/FForms/FForms.framework",
+				"${BUILT_PRODUCTS_DIR}/JPKit/JPKit.framework",
+				"${BUILT_PRODUCTS_DIR}/PhoneNumberKit/PhoneNumberKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FForm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FForms.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JPKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/PhoneNumberKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -219,6 +230,7 @@
 			files = (
 				FF876BDF202231390022C142 /* AppDelegate.swift in Sources */,
 				FF876BDB202231390022C142 /* ViewController.swift in Sources */,
+				FFF6A77F2050B03400E93729 /* VisaCardValidator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -386,7 +398,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FF876BB8202230C60022C142 /* Build configuration list for PBXProject "FForm" */ = {
+		FF876BB8202230C60022C142 /* Build configuration list for PBXProject "FForms" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				FF876BCD202230C60022C142 /* Debug */,
