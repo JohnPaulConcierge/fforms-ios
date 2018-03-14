@@ -63,7 +63,11 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     }
     
     open func validator(key: F) -> Validator? {
-        return delegate?.form(self, validatorFor: key)
+        if let d = delegate {
+            return d.form(self, validatorFor: key)
+        } else {
+            return key.validator
+        }
     }
     
     open func validator(field: UITextField) -> Validator? {
@@ -169,7 +173,11 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         guard let validator = validator(field: textField),
             var text = textField.text,
-            var swiftRange = Range(range, in: text) else {
+            var swiftRange = Range(range, in: text),
+            !(range.location == 0
+                && range.length == 0
+                && text.isEmpty
+                && string == " ") else { // To fix weird bug when using ios saved forms in iOS 11
             return true
         }
     

@@ -40,6 +40,8 @@ public extension FieldKey {
             return .emailAddress
         case .URL:
             return .URL
+        case .telephoneNumber:
+            return .phonePad
         default:
             return .default
         }
@@ -53,6 +55,8 @@ public extension FieldKey {
             return CardValidator.shared
         case .creditCardExpiry:
             return ExpiryDateValidator.shared
+        case .telephoneNumber:
+            return PhoneNumberValidator.shared
         default:
             return nil
         }
