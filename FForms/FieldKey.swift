@@ -10,8 +10,6 @@ import UIKit
 
 public protocol FieldKey: Hashable {
     
-    var rawValue: Int { get }
-    
     var contentType: FieldContentType { get }
     
     var validator: Validator? { get }

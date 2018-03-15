@@ -35,7 +35,6 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         let toolbar = buildToolbar()
         
         for (i, f) in fields.enumerated() {
-            f.tag = i
             f.delegate = self
             f.returnKeyType = .next
             f.inputAccessoryView = toolbar
@@ -59,7 +58,11 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     //MARK: - Utils
     
     open func field(key: F) -> UITextField {
-        return fields[key.rawValue]
+        return fields[self.keys.index(of: key)!]
+    }
+    
+    open func key(field: UITextField) -> F {
+        return keys[self.fields.index(of: field)!]
     }
     
     open func validator(key: F) -> Validator? {
@@ -71,12 +74,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     }
     
     open func validator(field: UITextField) -> Validator? {
-        guard let index = fields.index(of: field) else {
-            return nil
-        }
-        let key = keys[index]
-
-        return validator(key: key)
+        return validator(key: key(field: field))
     }
     
     //MARK: - Toolbar
@@ -267,8 +265,8 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     
     //MARK: - Values
     
-    open var result: Form.Result {
-        
+    //TODO: this probably should throw instead
+    open func result(formatted: Bool = true) -> Form.Result {
         var v = [F: String]()
         
         for (i, f) in fields.enumerated() {
@@ -282,12 +280,15 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
                     return .missing(key, .empty)
             }
             
-            if let v = validator(key: key),
-                let error = v.validate(text: v.filter(text: text)) {
-                return .missing(key, error)
+            if let validator = validator(key: key){
+                if let error = validator.validate(text: validator.filter(text: text)) {
+                    return .missing(key, error)
+                }
+                
+                v[key] = formatted ? text : validator.filter(text: text)
+            } else {
+                v[key] = text
             }
-            
-            v[keys[i]] = f.text
         }
         
         return .complete(v)
@@ -310,6 +311,12 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     
     open func value(for key: F) -> String? {
         return field(key: key).text
+    }
+    
+    open func setValues(_ values: [F: String]) throws {
+        try values.forEach {
+            try setValue($0.value, for: $0.key)
+        }
     }
 
 }
