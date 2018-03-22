@@ -13,7 +13,7 @@ extension Form {
         case complete([F: String])
         case missing(F, ValidationError)
         
-        var values: [F: String]? {
+        public var values: [F: String]? {
             switch self {
             case .complete(let v):
                 return v

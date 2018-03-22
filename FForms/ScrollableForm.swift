@@ -15,7 +15,7 @@ public protocol ScrollableFormDelegate: FormDelegate {
 
 open class ScrollableForm<F: FieldKey>: Form<F> {
     
-    private(set) weak var scrollView: UIScrollView?
+    open private(set) weak var scrollView: UIScrollView?
     
     public init(keys: [F], fields: [UITextField], scrollView: UIScrollView) throws {
         self.scrollView = scrollView
