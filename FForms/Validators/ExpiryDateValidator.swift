@@ -33,9 +33,13 @@ open class ExpiryDateValidator: Validator {
     }
     
     open func validate(text: String) -> ValidationError? {
+        guard text.count >= 4 else {
+            return ValidationError.invalidExpiryDate
+        }
+        
         let index = text.index(text.startIndex, offsetBy: 2)
-        guard text.count >= 4,
-            let month = Int(text[..<index]),
+        
+        guard let month = Int(text[..<index]),
             let year = Int(text[index...]) else {
                 return ValidationError.invalidExpiryDate
         }

@@ -73,6 +73,10 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         }
     }
     
+    open func isRequired(key: F) -> Bool {
+        return delegate?.form(self, requires: key) ?? key.isRequired
+    }
+    
     open func validator(field: UITextField) -> Validator? {
         return validator(key: key(field: field))
     }
@@ -185,6 +189,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         
         guard let set = validator.validCharacterSet else {
             textField.text = validator.format(text: text.replacingCharacters(in: swiftRange, with: string)).text
+            self.delegate?.form(self, field: textField, editingDidChangeTo: textField.text)
             return false
         }
 
@@ -255,6 +260,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             }
         }
         
+        self.delegate?.form(self, field: textField, editingDidChangeTo: textField.text)
         return false
     }
     
@@ -277,7 +283,12 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             let key = keys[i]
             guard let text = f.text,
                 !text.isEmpty else {
-                    return .missing(key, .empty)
+                    // Skipping non required keyss
+                    if isRequired(key: key) {
+                        return .missing(key, .empty)
+                    } else {
+                        continue
+                    }
             }
             
             if let validator = validator(key: key){
