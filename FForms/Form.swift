@@ -305,7 +305,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         return .complete(v)
     }
     
-    open func setValue(_ value: String, for key: F) throws {
+    open func setValue(_ value: String, for key: F, validate: Bool = true) throws {
         
         guard let v = self.validator(key: key) else {
             field(key: key).text = value
@@ -314,7 +314,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         
         let valid = v.filter(text: value)
         
-        if let v = v.validate(text: valid) {
+        if validate, let v = v.validate(text: valid) {
             throw FormError.valueDidNotValidate(v)
         }
         field(key: key).text = v.format(text: valid).text ?? value
@@ -324,9 +324,9 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         return field(key: key).text
     }
     
-    open func setValues(_ values: [F: String]) throws {
+    open func setValues(_ values: [F: String], validate: Bool = true) throws {
         try values.forEach {
-            try setValue($0.value, for: $0.key)
+            try setValue($0.value, for: $0.key, validate: validate)
         }
     }
 
