@@ -317,7 +317,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         if validate, let v = v.validate(text: valid) {
             throw FormError.valueDidNotValidate(v)
         }
-        field(key: key).text = v.format(text: valid).text ?? value
+        field(key: key).text = v.format(text: valid).text
     }
     
     open func value(for key: F) -> String? {
