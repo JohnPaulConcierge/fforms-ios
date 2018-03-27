@@ -1,0 +1,11 @@
+/* 
+  Localizable.strings
+  FForms
+
+  Created by John Paul on 3/7/18.
+  Copyright © 2018 John Paul. All rights reserved.
+*/
+
+"invalid_card" = "Invalid card";
+"invalid_expiry_date" = "Invalid date";
+"invalid_email" = "Invalid email";

@@ -10,41 +10,30 @@ import Foundation
 
 public struct FormAppearance {
     
-    public struct Toolbar {
+    public typealias ToolbarFactory = (Any, Selector, Selector, Selector) -> UIToolbar
+    
+    public static var makeToolbar: ToolbarFactory? = { target, previous, next, done in
+    
+        let toolbar = UIToolbar()
+    
+        toolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .rewind, target: target, action: previous),
+            UIBarButtonItem(barButtonSystemItem: .fastForward, target: target, action: next),
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(barButtonSystemItem: .done, target: target, action: done),
+            UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        ]
+        toolbar.items![0].width = 10
+        toolbar.items!.last!.width = 10
+    
+        toolbar.sizeToFit()
         
-        enum ItemType {
-            case text(String)
-            case image(name: String)
-            case system(UIBarButtonSystemItem)
-        }
-        
-        var nibName: String?
-        
-        var previousItem: ItemType?
-        
-        var nextItem: ItemType?
-        
-        var doneItem: ItemType?
-        
-        var backgroundColor: UIColor?
-        
-        var tintColor: UIColor?
-        
-        var barTintColor: UIColor?
-        
-        var padding: CGFloat = 10
-        
-        var isTranslucent: Bool = true
+        return toolbar
     }
     
-    public struct Field {
-        
-        var font: UIFont?
-        
-    }
+    public typealias FieldFormatter = (UITextField) -> ()
     
-    public static var toolbar: Toolbar?
-    
-    public static var field: Field?
+    public static var formatField: FieldFormatter?
     
 }

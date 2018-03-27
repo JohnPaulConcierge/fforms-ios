@@ -7,16 +7,20 @@
 
 import UIKit
 
-open class ScrollableForm<F: FieldKey>: Form<F>, UIScrollViewDelegate {
+public protocol ScrollableFormDelegate: FormDelegate {
     
-    private(set) weak var scrollView: UIScrollView?
+    func form<T>(_ form: ScrollableForm<T>, shouldScrollTo frame: CGRect, animated: Bool)
+    
+}
+
+open class ScrollableForm<F: FieldKey>: Form<F> {
+    
+    open private(set) weak var scrollView: UIScrollView?
     
     public init(keys: [F], fields: [UITextField], scrollView: UIScrollView) throws {
         self.scrollView = scrollView
         
         try super.init(keys: keys, fields: fields)
-        
-        self.scrollView?.delegate = self
     }
     
     open func scrollToActiveField(animated: Bool) {
@@ -28,9 +32,11 @@ open class ScrollableForm<F: FieldKey>: Form<F>, UIScrollViewDelegate {
         
         let textField = fields[activeIndex!]
         
-        var offset = scrollView.contentOffset
+        let offset = scrollView.contentOffset
         var frame = scrollView.convert(textField.frame, from: textField.superview!)
         frame.origin.y -= offset.y
+        
+        (delegate as? ScrollableFormDelegate)?.form(self, shouldScrollTo: frame, animated: animated)
     }
     
     open override func textFieldDidBeginEditing(_ textField: UITextField) {

@@ -8,37 +8,56 @@
 import Foundation
 import UIKit
 
-public protocol FieldKey {
+public protocol FieldKey: Hashable {
     
-    var rawValue: Int { get }
-    
-    var contentType: UITextContentType { get }
+    var contentType: FieldContentType { get }
     
     var validator: Validator? { get }
     
     var keyboardType: UIKeyboardType { get }
     
+    var isRequired: Bool { get }
+    
 }
 
 
-extension FieldKey {
+public extension FieldKey {
     
-    var keyboardType: UIKeyboardType {
-        
-        if #available(iOS 10, *) {
-            switch contentType {
-            case .postalCode, .creditCardNumber:
-                return .numberPad
-            case .emailAddress:
-                return .emailAddress
-            case .URL:
-                return .URL
-            default:
-                break
-            }
+    public var isRequired: Bool {
+        return true
+    }
+    
+    public var keyboardType: UIKeyboardType {
+        switch contentType {
+        case .postalCode,
+             .creditCardNumber,
+             .creditCardCVV,
+             .creditCardExpiry:
+            return .numberPad
+        case .emailAddress:
+            return .emailAddress
+        case .URL:
+            return .URL
+        case .telephoneNumber:
+            return .phonePad
+        default:
+            return .default
         }
-        return .default
-        
+    }
+    
+    public var validator: Validator? {
+        switch contentType {
+        case .emailAddress:
+            return EmailValidator.shared
+        case .creditCardNumber:
+            return CardValidator.shared
+        case .creditCardExpiry:
+            return ExpiryDateValidator.shared
+        case .telephoneNumber:
+            return PhoneNumberValidator.shared
+        default:
+            return nil
+        }
     }
     
 }
