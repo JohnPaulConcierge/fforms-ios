@@ -32,6 +32,7 @@ public extension FieldKey {
         case .postalCode,
              .creditCardNumber,
              .creditCardCVV,
+             .birthdate,
              .creditCardExpiry:
             return .numberPad
         case .emailAddress:
@@ -55,6 +56,8 @@ public extension FieldKey {
             return ExpiryDateValidator.shared
         case .telephoneNumber:
             return PhoneNumberValidator.shared
+        case .birthdate:
+            return BirthdateValidator.shared
         default:
             return nil
         }
