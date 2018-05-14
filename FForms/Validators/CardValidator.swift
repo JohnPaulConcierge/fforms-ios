@@ -12,6 +12,9 @@ extension ValidationError {
     public static let invalidCard = ValidationError("invalid_card")
 }
 
+/// Validator for credit card numbers
+///
+/// Only allows numbers and adds spaces
 open class CardValidator: Validator {
     
     public static var maxNumberOfCharacters = 16
@@ -37,8 +40,7 @@ open class CardValidator: Validator {
     }
     
     open func validate(text: String) -> ValidationError? {
-        let count = filter(text: text).count
-        return count == validCount ? nil : ValidationError.invalidCard
+        return text.count == validCount ? nil : ValidationError.invalidCard
     }
     
     open var validCount: Int? {

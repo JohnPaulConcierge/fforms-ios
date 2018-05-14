@@ -13,6 +13,8 @@ extension ValidationError {
     public static let pastExpiryDate = ValidationError(rawValue: "past_expiry_date")!
 }
 
+
+/// Validator for expiry dates, expects MM/YY format
 open class ExpiryDateValidator: Validator {
     
     public static var maxNumberOfCharacters = 4
@@ -40,7 +42,7 @@ open class ExpiryDateValidator: Validator {
         let index = text.index(text.startIndex, offsetBy: 2)
         
         guard let month = Int(text[..<index]),
-            let year = Int(text[text.index(index, offsetBy: 1)...]) else {
+            let year = Int(text[index...]) else {
                 return ValidationError.invalidExpiryDate
         }
         
