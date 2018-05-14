@@ -40,7 +40,7 @@ open class ExpiryDateValidator: Validator {
         let index = text.index(text.startIndex, offsetBy: 2)
         
         guard let month = Int(text[..<index]),
-            let year = Int(text[index...]) else {
+            let year = Int(text[text.index(index, offsetBy: 1)...]) else {
                 return ValidationError.invalidExpiryDate
         }
         
