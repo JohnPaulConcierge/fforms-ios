@@ -78,7 +78,13 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
     }
     
     open func validator(field: UITextField) -> Validator? {
-        return validator(key: key(field: field))
+        let v = validator(key: key(field: field))
+        if let d = delegate, v is DateValidator {
+            let tuple = d.form(self, formatForDate: key(field: field))
+            (v as? DateValidator)?.dateFormat = tuple.0
+            (v as? DateValidator)?.shouldBeInPast = tuple.1
+        }
+        return v
     }
     
     //MARK: - Toolbar

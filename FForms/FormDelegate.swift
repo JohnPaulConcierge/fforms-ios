@@ -17,6 +17,7 @@ public protocol FormDelegate: class {
     
     func form<F>(_ form: Form<F>, requires key: F) -> Bool
     
+    func form<F>(_ form: Form<F>, formatForDate key: F) -> (String, Bool)
 }
 
 extension FormDelegate {
@@ -28,5 +29,4 @@ extension FormDelegate {
     public func form<F>(_ form: Form<F>, requires key: F) -> Bool {
         return key.isRequired
     }
-    
 }

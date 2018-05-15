@@ -20,7 +20,6 @@ public protocol FieldKey: Hashable {
     
 }
 
-
 public extension FieldKey {
     
     public var isRequired: Bool {
@@ -52,12 +51,10 @@ public extension FieldKey {
             return EmailValidator.shared
         case .creditCardNumber:
             return CardValidator.shared
-        case .creditCardExpiry:
-            return ExpiryDateValidator.shared
         case .telephoneNumber:
             return PhoneNumberValidator.shared
-        case .birthdate:
-            return BirthdateValidator.shared
+        case .birthdate, .creditCardExpiry:
+            return DateValidator.shared
         default:
             return nil
         }
