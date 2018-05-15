@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name         = "FForms"
-  s.version      = "0.1.0"
+  s.version      = "0.1.1"
   s.summary      = "Field based form library"
   s.license      = "JohnPaul"
   s.homepage     = "https://github.com/JohnPaulConcierge/fforms-ios"

@@ -253,7 +253,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
         if let count = validator.validCount,
             count == validReplaced.count {
             
-            if let error = validator.validate(text: finalText) {
+            if let error = validator.validate(text: validReplaced) {
                 delegate?.form(self, field: textField, didEndEditingWith: error)
             } else {
                 nextField?.becomeFirstResponder()
