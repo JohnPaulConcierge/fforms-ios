@@ -32,13 +32,15 @@ public extension FieldKey {
              .creditCardNumber,
              .creditCardCVV,
              .birthdate,
-             .creditCardExpiry:
+             .creditCardExpiry,
+             .uncheckedNumberSequence:
             return .numberPad
         case .emailAddress:
             return .emailAddress
         case .URL:
             return .URL
-        case .telephoneNumber:
+        case .telephoneNumber,
+             .uncheckedPhone:
             return .phonePad
         default:
             return .default

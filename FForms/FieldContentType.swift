@@ -111,5 +111,7 @@ extension FieldContentType {
     public static let creditCardExpiry = FieldContentType(rawValue: "Credit Card Expiration Date")
     public static let creditCardCVV = FieldContentType(rawValue: "Credit Card CVV")
     public static let birthdate = FieldContentType(rawValue: "Date of birth")
+    public static let uncheckedPhone = FieldContentType(rawValue: "Unchecked Phone")
+    public static let uncheckedNumberSequence = FieldContentType(rawValue: "Number Sequence")
 
 }
