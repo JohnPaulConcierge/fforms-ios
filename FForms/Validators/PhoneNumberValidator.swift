@@ -15,12 +15,15 @@ extension ValidationError {
 
 open class PhoneNumberValidator: Validator {
     
-    public static let shared = PhoneNumberValidator()
+    public static var shared = PhoneNumberValidator()
     
     public let phoneNumberKit: PhoneNumberKit
+
+    public let forceInternational: Bool
     
-    public init(phoneNumberKit: PhoneNumberKit = PhoneNumberKit()) {
+    public init(phoneNumberKit: PhoneNumberKit = PhoneNumberKit(), forceInternational: Bool = false) {
         self.phoneNumberKit = phoneNumberKit
+        self.forceInternational = forceInternational
     }
     
     open func format(text: String) -> (text: String, offset: Int) {
@@ -28,6 +31,9 @@ open class PhoneNumberValidator: Validator {
     }
     
     open func validate(text: String) -> ValidationError? {
+        guard !forceInternational || text.hasPrefix("+") else {
+            return .invalidPhone
+        }
         let n = try? self.phoneNumberKit.parse(text)
         return n == nil ? .invalidPhone : nil
     }
