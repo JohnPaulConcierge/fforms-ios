@@ -11,9 +11,9 @@ import FForms
 import JPKit
 
 class ViewController: UIViewController {
-    
+
     public enum Field: Int, FieldKey {
-        
+
         case number
         case expiry
         case cvv
@@ -23,9 +23,9 @@ class ViewController: UIViewController {
         case zip
         case country
         case phoneNumber
-        
+
         public static var all: [Field] = [.number, .expiry, .cvv, .name, .address, .city, .zip, .country, .phoneNumber]
-        
+
         public var contentType: FieldContentType {
             switch self {
             case .number:
@@ -48,7 +48,7 @@ class ViewController: UIViewController {
                 return .telephoneNumber
             }
         }
-        
+
         public var validator: Validator? {
             switch contentType {
             case .emailAddress:
@@ -62,14 +62,14 @@ class ViewController: UIViewController {
             }
         }
     }
-    
+
     @IBOutlet var fields: [FloatingLabelTextField] = []
-    
+
     var form: Form<Field>!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         form = try! Form(keys: Field.all, fields: fields)
         form.field(key: .number).text = "4"
         form.delegate = self
@@ -83,7 +83,7 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: FormDelegate {
-    
+
     func form<F>(_ form: Form<F>, field: UITextField, didEndEditingWith error: ValidationError?) {
         if let e = error {
             (field as? FloatingLabelTextField)?.error = NSLocalizedString(e.rawValue, comment: "")
@@ -91,9 +91,8 @@ extension ViewController: FormDelegate {
             (field as? FloatingLabelTextField)?.error = nil
         }
     }
-    
+
     func form<F>(_ form: Form<F>, field: UITextField, editingDidChangeTo text: String?) {
-        
+
     }
 }
-

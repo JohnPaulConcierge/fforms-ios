@@ -7,15 +7,14 @@
 
 import Foundation
 
-
 public struct FormAppearance {
-    
+
     public typealias ToolbarFactory = (Any, Selector, Selector, Selector) -> UIToolbar
-    
+
     public static var makeToolbar: ToolbarFactory? = { target, previous, next, done in
-    
+
         let toolbar = UIToolbar()
-    
+
         toolbar.items = [
             UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil),
             UIBarButtonItem(barButtonSystemItem: .rewind, target: target, action: previous),
@@ -26,14 +25,14 @@ public struct FormAppearance {
         ]
         toolbar.items![0].width = 10
         toolbar.items!.last!.width = 10
-    
+
         toolbar.sizeToFit()
-        
+
         return toolbar
     }
-    
-    public typealias FieldFormatter = (UITextField) -> ()
-    
+
+    public typealias FieldFormatter = (UITextField) -> Void
+
     public static var formatField: FieldFormatter?
-    
+
 }
