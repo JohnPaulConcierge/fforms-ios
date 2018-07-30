@@ -9,9 +9,9 @@
 import FForms
 
 class VisaCardValidator: CardValidator {
-    
+
     open static let sharedVisa = VisaCardValidator()
-    
+
     override func format(text: String) -> (text: String, offset: Int) {
         var t = text
         var offset = 0
@@ -23,5 +23,5 @@ class VisaCardValidator: CardValidator {
         v.offset += offset
         return v
     }
-    
+
 }

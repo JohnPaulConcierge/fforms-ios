@@ -14,4 +14,6 @@ Pod::Spec.new do |s|
   
   s.dependency "PhoneNumberKit"
 
+  s.resource_bundle = { 'FForms' => 'FForms/Resources/*.lproj/*.strings' }
+
 end

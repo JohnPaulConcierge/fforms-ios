@@ -9,13 +9,13 @@ import Foundation
 
 /// Protocol used to control the authorized values and displayed formats in TextFields
 public protocol Validator {
-    
+
     /// The set of valid characters.
     /// All other characters are ignored.
     ///
     /// The default implementation returns nil.
     var validCharacterSet: CharacterSet? { get }
-    
+
     /// The character count at which the string is complete.
     /// (no counting characters are not in `validCharacterSet`)
     ///
@@ -24,7 +24,7 @@ public protocol Validator {
     ///
     /// The default implementation returns nil.
     var validCount: Int? { get }
-    
+
     /// Formats the text.
     ///
     /// You should use this method to add non valid characters to make the text more appealing.
@@ -37,15 +37,14 @@ public protocol Validator {
     /// - Returns: text: the formatted text
     ///            offset: the cursor offset compared to the calculated position.
     func format(text: String) -> (text: String, offset: Int)
-    
+
     /// Validates the content.
     ///
     /// - Parameter text: a String that only contains valid characters.
     /// No need to call `filter` in your implementation.
     /// - Returns: nil if the text is valid or the appropriate ValidationError
     func validate(text: String) -> ValidationError?
-    
-    
+
     /// Filters the text so that it is appropriate for treatment.
     ///
     /// The default implementation removes characters that are not in
@@ -56,19 +55,19 @@ public protocol Validator {
     /// - Parameter text: input text
     /// - Returns: the filtered text
     func filter(text: String) -> String
-    
+
 }
 
 extension Validator {
-    
+
     public var validCharacterSet: CharacterSet? {
         return nil
     }
-    
+
     public var validCount: Int? {
         return nil
     }
-    
+
     public func filter(text: String) -> String {
         guard let set = validCharacterSet else {
             return text
@@ -79,22 +78,22 @@ extension Validator {
 }
 
 /// Validation Error
-public struct ValidationError : RawRepresentable, Equatable, Hashable {
-    
+public struct ValidationError: RawRepresentable, Equatable, Hashable {
+
     public let rawValue: String
-    
+
     public init?(rawValue: String) {
         self.rawValue = rawValue
     }
-    
+
     public init(_ rawValue: String) {
         self.rawValue = rawValue
     }
-    
+
     public var hashValue: Int {
         return rawValue.hashValue
     }
-    
+
     public static let empty = ValidationError("empty")
-    
+
 }

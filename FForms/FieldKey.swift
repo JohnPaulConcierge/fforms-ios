@@ -9,24 +9,23 @@ import Foundation
 import UIKit
 
 public protocol FieldKey: Hashable {
-    
+
     var contentType: FieldContentType { get }
-    
+
     var validator: Validator? { get }
-    
+
     var keyboardType: UIKeyboardType { get }
-    
+
     var isRequired: Bool { get }
-    
+
 }
 
-
 public extension FieldKey {
-    
+
     public var isRequired: Bool {
         return true
     }
-    
+
     public var keyboardType: UIKeyboardType {
         switch contentType {
         case .postalCode,
@@ -44,7 +43,7 @@ public extension FieldKey {
             return .default
         }
     }
-    
+
     public var validator: Validator? {
         switch contentType {
         case .emailAddress:
@@ -55,9 +54,11 @@ public extension FieldKey {
             return ExpiryDateValidator.shared
         case .telephoneNumber:
             return PhoneNumberValidator.shared
+        case .birthDate:
+            return DateValidator.shared
         default:
             return nil
         }
     }
-    
+
 }
