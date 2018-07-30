@@ -16,7 +16,7 @@ extension ValidationError {
 open class DateValidator: Validator {
 
     public static var shared = DateValidator(
-        dateFormat: localizedString(id: "fforms_date_validator_format", table: "FForms"),
+        dateFormat: localizedString(id: "date_validator_format", table: "FForms"),
         past: true)
 
     public let dateFormat: String
