@@ -34,7 +34,7 @@ open class PhoneNumberValidator: Validator {
         guard !forceInternational || text.hasPrefix("+") else {
             return .invalidPhone
         }
-        let n = try? self.phoneNumberKit.parse(text)
+        let n = try? self.phoneNumberKit.parse(text, ignoreType: true)
         return n == nil ? .invalidPhone : nil
     }
 
