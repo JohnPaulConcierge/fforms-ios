@@ -56,6 +56,8 @@ public extension FieldKey {
             return PhoneNumberValidator.shared
         case .birthDate:
             return DateValidator.shared
+        case .creditCardCVV:
+            return CVVValidator.shared
         default:
             return nil
         }
