@@ -81,6 +81,52 @@ public struct FieldContentType: RawRepresentable, Equatable, Hashable {
     public var hashValue: Int {
         return rawValue.hashValue
     }
+
+    public var validator: Validator? {
+        switch self {
+        case .emailAddress:
+            return EmailValidator.shared
+        case .creditCardNumber:
+            return CardValidator.shared
+        case .creditCardExpiry:
+            return ExpiryDateValidator.shared
+        case .telephoneNumber:
+            return PhoneNumberValidator.shared
+        case .birthDate:
+            return DateValidator.shared
+        case .creditCardCVV:
+            return CVVValidator.shared
+        default:
+            return nil
+        }
+    }
+
+    public var keyboardType: UIKeyboardType {
+        switch self {
+        case .postalCode,
+             .creditCardNumber,
+             .creditCardCVV,
+             .creditCardExpiry:
+            return .numberPad
+        case .emailAddress:
+            return .emailAddress
+        case .URL:
+            return .URL
+        case .telephoneNumber:
+            return .phonePad
+        default:
+            return .default
+        }
+    }
+
+    public var autocorrectionType: UITextAutocorrectionType {
+        switch self {
+        case .birthDate, .password:
+            return .no
+        default:
+            return .default
+        }
+    }
 }
 
 public func ==(lhs: FieldContentType, rhs: FieldContentType) -> Bool {

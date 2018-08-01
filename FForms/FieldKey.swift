@@ -18,6 +18,8 @@ public protocol FieldKey: Hashable {
 
     var isRequired: Bool { get }
 
+    var autocorrectionType: UITextAutocorrectionType { get }
+
 }
 
 public extension FieldKey {
@@ -27,40 +29,15 @@ public extension FieldKey {
     }
 
     public var keyboardType: UIKeyboardType {
-        switch contentType {
-        case .postalCode,
-             .creditCardNumber,
-             .creditCardCVV,
-             .creditCardExpiry:
-            return .numberPad
-        case .emailAddress:
-            return .emailAddress
-        case .URL:
-            return .URL
-        case .telephoneNumber:
-            return .phonePad
-        default:
-            return .default
-        }
+        return contentType.keyboardType
     }
 
     public var validator: Validator? {
-        switch contentType {
-        case .emailAddress:
-            return EmailValidator.shared
-        case .creditCardNumber:
-            return CardValidator.shared
-        case .creditCardExpiry:
-            return ExpiryDateValidator.shared
-        case .telephoneNumber:
-            return PhoneNumberValidator.shared
-        case .birthDate:
-            return DateValidator.shared
-        case .creditCardCVV:
-            return CVVValidator.shared
-        default:
-            return nil
-        }
+        return contentType.validator
+    }
+
+    public var autocorrectionType: UITextAutocorrectionType {
+        return contentType.autocorrectionType
     }
 
 }

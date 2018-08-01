@@ -50,6 +50,7 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             }
 
             f.keyboardType = key.keyboardType
+            f.autocorrectionType = key.autocorrectionType
         }
         fields.last?.returnKeyType = .done
 
