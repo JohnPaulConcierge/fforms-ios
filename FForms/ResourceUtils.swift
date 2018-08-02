@@ -15,9 +15,9 @@ private var fformsBundle: Bundle {
 func localizedString(id: String, table: String? = nil) -> String {
 
     let fullId = "fforms_\(id)"
-    let mainString = Bundle.main.localizedString(forKey: fullId, value: nil, table: nil)
+    let mainString = Bundle.main.localizedString(forKey: fullId, value: nil, table: table)
     if mainString == fullId {
-        return fformsBundle.localizedString(forKey: fullId, value: nil, table: nil)
+        return fformsBundle.localizedString(forKey: fullId, value: nil, table: table)
     } else {
         return mainString
     }
