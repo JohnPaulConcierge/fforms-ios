@@ -7,8 +7,12 @@
 
 import Foundation
 
+//TODO: use generics to handle values other than strings
+//TODO: split text part into another protocol `TextValidator`
 /// Protocol used to control the authorized values and displayed formats in TextFields
 public protocol Validator {
+
+    var authorizedValues: [String]? { get }
 
     /// The set of valid characters.
     /// All other characters are ignored.
@@ -43,6 +47,7 @@ public protocol Validator {
     /// - Parameter text: a String that only contains valid characters.
     /// No need to call `filter` in your implementation.
     /// - Returns: nil if the text is valid or the appropriate ValidationError
+    //TODO: that function should throw and returned the parsed value (e.g Date, etc.)
     func validate(text: String) -> ValidationError?
 
     /// Filters the text so that it is appropriate for treatment.
@@ -59,6 +64,11 @@ public protocol Validator {
 }
 
 extension Validator {
+
+    public var authorizedValues: [String]? {
+        return nil
+    }
+
 
     public var validCharacterSet: CharacterSet? {
         return nil

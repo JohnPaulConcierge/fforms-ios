@@ -12,7 +12,12 @@ public enum FormError: Error {
     case valueDidNotValidate(ValidationError)
 }
 
-open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
+open class Form<F: FieldKey>:
+    NSObject,
+    UITextFieldDelegate,
+    UIPickerViewDelegate,
+    UIPickerViewDataSource
+{
 
     open let keys: [F]
 
@@ -51,6 +56,14 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
 
             f.keyboardType = key.keyboardType
             f.autocorrectionType = key.autocorrectionType
+
+            if validator(key: key)?.authorizedValues != nil {
+
+                let pickerView = UIPickerView(frame: CGRect.zero)
+                pickerView.dataSource = self
+                pickerView.delegate = self
+                f.inputView = pickerView
+            }
         }
         fields.last?.returnKeyType = .done
 
@@ -330,5 +343,40 @@ open class Form<F: FieldKey>: NSObject, UITextFieldDelegate {
             try setValue($0.value, for: $0.key, validate: validate)
         }
     }
+
+    //MARK: - UIPickerViewDataSource
+
+    public func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    public func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+
+        guard let i = activeIndex,
+            let values = validator(key: keys[i])?.authorizedValues else {
+                return 0
+        }
+        return values.count
+
+    }
+
+    public func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        guard let i = activeIndex,
+            let values = validator(key: keys[i])?.authorizedValues else {
+                return nil
+        }
+        return values[row]
+    }
+
+    //MARK: - UIPickerViewDelegate
+
+    public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        guard let i = activeIndex,
+            let values = validator(key: keys[i])?.authorizedValues else {
+                return
+        }
+        fields[i].text = values[row]
+    }
+
 
 }
