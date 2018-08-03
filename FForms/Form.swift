@@ -376,6 +376,8 @@ open class Form<F: FieldKey>:
                 return
         }
         fields[i].text = values[row]
+
+        delegate?.form(self, field: fields[i], editingDidChangeTo: values[row])
     }
 
 
