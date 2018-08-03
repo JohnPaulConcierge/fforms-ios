@@ -96,6 +96,8 @@ public struct FieldContentType: RawRepresentable, Equatable, Hashable {
             return DateValidator.shared
         case .creditCardCVV:
             return CVVValidator.shared
+        case .countryName:
+            return CountryValidator.shared
         default:
             return nil
         }
