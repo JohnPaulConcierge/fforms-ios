@@ -19,7 +19,7 @@ open class CardValidator: Validator {
 
     public static var maxNumberOfCharacters = 16
 
-    open static let shared = CardValidator()
+    public static let shared = CardValidator()
 
     public init() {
 

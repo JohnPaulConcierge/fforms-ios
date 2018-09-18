@@ -19,9 +19,9 @@ open class Form<F: FieldKey>:
     UIPickerViewDataSource
 {
 
-    open let keys: [F]
+    public let keys: [F]
 
-    open let fields: [UITextField]
+    public let fields: [UITextField]
 
     open private(set) var activeIndex: Int?
 
