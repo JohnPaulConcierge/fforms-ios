@@ -49,7 +49,7 @@ open class DateValidator: Validator {
 
     open func format(text: String) -> (text: String, offset: Int) {
         var str = text
-        for entry in separators {
+        for entry in separators.sorted(by: <) {
             let i = entry.key
             if i < str.count {
                 str.insert(entry.value, at: str.index(str.startIndex, offsetBy: i))
