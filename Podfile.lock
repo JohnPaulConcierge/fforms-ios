@@ -1,33 +1,39 @@
 PODS:
   - FForms (0.1.1):
     - PhoneNumberKit
-  - JPKit/FloatingLabel (0.4.3)
-  - PhoneNumberKit (2.1.0):
-    - PhoneNumberKit/PhoneNumberKitCore (= 2.1.0)
-    - PhoneNumberKit/UIKit (= 2.1.0)
-  - PhoneNumberKit/PhoneNumberKitCore (2.1.0)
-  - PhoneNumberKit/UIKit (2.1.0):
+  - JPKit/FloatingLabel (0.4.4)
+  - PhoneNumberKit (2.5.0):
+    - PhoneNumberKit/PhoneNumberKitCore (= 2.5.0)
+    - PhoneNumberKit/UIKit (= 2.5.0)
+  - PhoneNumberKit/PhoneNumberKitCore (2.5.0)
+  - PhoneNumberKit/UIKit (2.5.0):
     - PhoneNumberKit/PhoneNumberKitCore
 
 DEPENDENCIES:
   - FForms (from `../fforms-ios`)
-  - JPKit/FloatingLabel
+  - JPKit/FloatingLabel (from `https://gitlab.infra.johnpaultech.com/mobile/jpkit-ios.git`, branch `develop`)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - PhoneNumberKit
-  https://github.com/JohnPaulConcierge/Pods.git:
-    - JPKit
 
 EXTERNAL SOURCES:
   FForms:
     :path: "../fforms-ios"
+  JPKit:
+    :branch: develop
+    :git: https://gitlab.infra.johnpaultech.com/mobile/jpkit-ios.git
+
+CHECKOUT OPTIONS:
+  JPKit:
+    :commit: 85cc7c917d96721b2bdd877d64d6563b50ad5958
+    :git: https://gitlab.infra.johnpaultech.com/mobile/jpkit-ios.git
 
 SPEC CHECKSUMS:
   FForms: b7df677f07b0be756981ba6b3a79d58a83bccf1b
-  JPKit: fefa982386c0281b3be2adf692bcf561d828465c
-  PhoneNumberKit: 62003f40ff75315fd3738286558bc365365ac222
+  JPKit: d17979b4d304fd1c837e294f1a0fc008e834fa93
+  PhoneNumberKit: 32a1cd1e0aa9e950feb01886a22fd7386b8cf903
 
-PODFILE CHECKSUM: 91e053d7e65bcd8bab64c9fa960be6e039e60356
+PODFILE CHECKSUM: 57306eec6c317f72131f1c3da91642e14525aabf
 
 COCOAPODS: 1.5.3
