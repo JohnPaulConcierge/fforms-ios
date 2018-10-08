@@ -9,6 +9,6 @@ target 'FForm' do
   use_frameworks!
 
   pod 'FForms', path: '../fforms-ios'
-  pod 'JPKit/FloatingLabel'
+  pod 'JPKit/FloatingLabel', git: 'https://gitlab.infra.johnpaultech.com/mobile/jpkit-ios.git', branch: 'develop'
 
 end
