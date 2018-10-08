@@ -2,13 +2,13 @@
 platform :ios, '9.0'
 
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/JohnPaulConcierge/Pods.git'
+source 'https://gitlab.infra.johnpaultech.com/mobile/Pods.git'
 
 target 'FForm' do
 
   use_frameworks!
 
   pod 'FForms', path: '../fforms-ios'
-  pod 'JPKit/FloatingLabel'
+  pod 'JPKit/FloatingLabel', git: 'https://gitlab.infra.johnpaultech.com/mobile/jpkit-ios.git', branch: 'develop'
 
 end
