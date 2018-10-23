@@ -69,7 +69,6 @@ extension Validator {
         return nil
     }
 
-
     public var validCharacterSet: CharacterSet? {
         return nil
     }

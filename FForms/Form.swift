@@ -16,8 +16,7 @@ open class Form<F: FieldKey>:
     NSObject,
     UITextFieldDelegate,
     UIPickerViewDelegate,
-    UIPickerViewDataSource
-{
+    UIPickerViewDataSource {
 
     public let keys: [F]
 
@@ -344,7 +343,7 @@ open class Form<F: FieldKey>:
         }
     }
 
-    //MARK: - UIPickerViewDataSource
+    // MARK: - UIPickerViewDataSource
 
     public func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
@@ -368,7 +367,7 @@ open class Form<F: FieldKey>:
         return values[row]
     }
 
-    //MARK: - UIPickerViewDelegate
+    // MARK: - UIPickerViewDelegate
 
     public func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         guard let i = activeIndex,
@@ -379,6 +378,5 @@ open class Form<F: FieldKey>:
 
         delegate?.form(self, field: fields[i], editingDidChangeTo: values[row])
     }
-
 
 }

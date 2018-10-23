@@ -13,23 +13,23 @@ extension ValidationError {
 }
 
 struct CVVValidator: Validator {
-    
+
     public static let shared = CVVValidator()
-    
+
     var validCharacterSet: CharacterSet? {
         return CharacterSet(charactersIn: "0123456789")
     }
-    
+
     var validCount: Int? {
         return 3
     }
-    
+
     func format(text: String) -> (text: String, offset: Int) {
         return (text, 0)
     }
-    
+
     func validate(text: String) -> ValidationError? {
         return text.count == 3 ? nil : ValidationError.cvvInvalid
     }
-    
+
 }

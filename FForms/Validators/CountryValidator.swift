@@ -63,6 +63,4 @@ open class CountryValidator: Validator {
         return countries
     }
 
-
-
 }
