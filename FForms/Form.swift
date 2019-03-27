@@ -71,11 +71,11 @@ open class Form<F: FieldKey>:
     // MARK: - Utils
 
     open func field(key: F) -> UITextField {
-        return fields[self.keys.index(of: key)!]
+        return fields[self.keys.firstIndex(of: key)!]
     }
 
     open func key(field: UITextField) -> F {
-        return keys[self.fields.index(of: field)!]
+        return keys[self.fields.firstIndex(of: field)!]
     }
 
     open func validator(key: F) -> Validator? {
@@ -152,7 +152,7 @@ open class Form<F: FieldKey>:
     // MARK: - UITextFieldDelegate
 
     open func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        guard var index = fields.index(of: textField) else {
+        guard var index = fields.firstIndex(of: textField) else {
             return true
         }
         index += 1
@@ -172,7 +172,7 @@ open class Form<F: FieldKey>:
     }
 
     open func textFieldDidBeginEditing(_ textField: UITextField) {
-        activeIndex = fields.index(of: textField)
+        activeIndex = fields.firstIndex(of: textField)
 
         let toolbar = textField.inputAccessoryView as! UIToolbar
         toolbar.items![1].isEnabled = previousField != nil

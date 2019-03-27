@@ -24,19 +24,19 @@ public protocol FieldKey: Hashable {
 
 public extension FieldKey {
 
-    public var isRequired: Bool {
+    var isRequired: Bool {
         return true
     }
 
-    public var keyboardType: UIKeyboardType {
+    var keyboardType: UIKeyboardType {
         return contentType.keyboardType
     }
 
-    public var validator: Validator? {
+    var validator: Validator? {
         return contentType.validator
     }
 
-    public var autocorrectionType: UITextAutocorrectionType {
+    var autocorrectionType: UITextAutocorrectionType {
         return contentType.autocorrectionType
     }
 

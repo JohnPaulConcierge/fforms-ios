@@ -1,14 +1,18 @@
 # Uncomment the next line to define a global platform for your project
 platform :ios, '9.0'
+use_frameworks!
+
+workspace 'FForms'
 
 source 'https://github.com/CocoaPods/Specs.git'
-source 'https://github.com/JohnPaulConcierge/Pods.git'
 
-target 'FForm' do
+pod 'PhoneNumberKit', inhibit_warnings: true
 
-  use_frameworks!
+target 'FForms' do
+  project 'FForms'
+end
 
-  pod 'FForms', path: '../fforms-ios'
-  pod 'JPKit/FloatingLabel', git: 'https://gitlab.infra.johnpaultech.com/mobile/jpkit-ios.git', branch: 'develop'
-
+target 'Example' do
+  project 'Example'
+  pod 'CasperText', git: 'https://github.com/JohnPaulConcierge/caspertext-ios.git'
 end

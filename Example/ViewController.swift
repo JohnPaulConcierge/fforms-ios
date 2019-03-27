@@ -8,7 +8,7 @@
 
 import UIKit
 import FForms
-import JPKit
+import CasperText
 
 class ViewController: UIViewController {
 
@@ -50,7 +50,7 @@ class ViewController: UIViewController {
         }
     }
 
-    @IBOutlet var fields: [FloatingLabelTextField] = []
+    @IBOutlet var fields: [CasperTextField] = []
 
     var form: Form<Field>!
 
@@ -73,9 +73,9 @@ extension ViewController: FormDelegate {
 
     func form<F>(_ form: Form<F>, field: UITextField, didEndEditingWith error: ValidationError?) {
         if let e = error {
-            (field as? FloatingLabelTextField)?.error = NSLocalizedString(e.rawValue, comment: "")
+            (field as? CasperTextField)?.error = NSLocalizedString(e.rawValue, comment: "")
         } else {
-            (field as? FloatingLabelTextField)?.error = nil
+            (field as? CasperTextField)?.error = nil
         }
     }
 
