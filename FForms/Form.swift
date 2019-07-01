@@ -74,6 +74,10 @@ open class Form<F: FieldKey>:
         return fields[self.keys.firstIndex(of: key)!]
     }
 
+    open func field(index: Int) -> UITextField? {
+        return self.keys.indices.contains(index) ? fields[index] : nil
+    }
+
     open func key(field: UITextField) -> F {
         return keys[self.fields.firstIndex(of: field)!]
     }
@@ -318,11 +322,11 @@ open class Form<F: FieldKey>:
         return .complete(v)
     }
 
-    open func setValue(_ value: String, for key: F, validate: Bool = true) throws {
+    private func getValidText(value: String, key: F, validate: Bool) throws -> String? {
 
         guard let v = self.validator(key: key) else {
             field(key: key).text = value
-            return
+            return nil
         }
 
         let valid = v.filter(text: value)
@@ -330,7 +334,20 @@ open class Form<F: FieldKey>:
         if validate, let v = v.validate(text: valid) {
             throw FormError.valueDidNotValidate(v)
         }
-        field(key: key).text = v.format(text: valid).text
+
+        return v.format(text: valid).text
+    }
+
+    open func setValue(_ value: String, for key: F, validate: Bool = true) throws {
+        if let text = try! getValidText(value: value, key: key, validate: validate) {
+            field(key: key).text = text
+        }
+    }
+
+    open func setValue(_ value: String, for key: F, at index: Int, validate: Bool = true) throws {
+        if let text = try! getValidText(value: value, key: key, validate: validate) {
+            field(index: index)?.text = text
+        }
     }
 
     open func value(for key: F) -> String? {
